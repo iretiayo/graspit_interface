@@ -9,6 +9,9 @@ SimAnnParams sim_ann_params
 
 int32 max_steps
 int32 feedback_num_steps
+
+int32 use_seed_grasp
+Grasp seed_grasp
 ---
 # Result
 Grasp[] grasps

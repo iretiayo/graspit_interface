@@ -862,6 +862,14 @@ void GraspitInterface::runPlannerInMainThread()
 
     ROS_INFO("Initing mHandObjectState");
     mHandObjectState->reset();
+    if (goal.use_seed_grasp) {
+        ROS_INFO("Setting mHandObjectState to starting seed grasp");
+        // set hand position and dofs
+        transf newTransform = rosMsgToTransf(goal.seed_grasp.pose);
+        graspitCore->getWorld()->getRobot(0)->setTran(newTransform);
+        graspitCore->getWorld()->getHand(0)->forceDOFVals(goal.seed_grasp.dofs.data());
+        mHandObjectState->saveCurrentHandState();
+    }
 
     ROS_INFO("Initing mPlanner");
 
