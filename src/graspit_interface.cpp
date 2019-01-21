@@ -903,6 +903,7 @@ void GraspitInterface::runPlannerInMainThread()
         simAnnParams.YC = goal.sim_ann_params.YC;
         simAnnParams.HC = goal.sim_ann_params.HC;
         simAnnParams.YDIMS = goal.sim_ann_params.YDIMS;
+        simAnnParams.HDIMS = goal.sim_ann_params.HDIMS;
         simAnnParams.NBR_ADJ = goal.sim_ann_params.NBR_ADJ;
         simAnnParams.ERR_ADJ = goal.sim_ann_params.ERR_ADJ;
         simAnnParams.DEF_T0 = goal.sim_ann_params.DEF_T0;
