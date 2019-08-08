@@ -1016,6 +1016,17 @@ void GraspitInterface::graspPlanningStateToROSMsg(const GraspPlanningState* gps,
     {
         const GraspPlanningState *gps  = mPlanner->getGrasp(i);
         graspit_interface::Grasp g;
+
+        // Check if grasp is valid.
+        // This is to handle hand-object collision cases that causes graspit World::findAllContacts to freeze
+        // issue possibly in jumpDOFToContact putting fingers in the object
+        gps->execute(mHand);
+        mHand->autoGrasp(false,1.0,false);
+        bool isLegal = mHand->getWorld()->noCollision(mHand);
+        if (isLegal){
+            continue;
+        }
+
         graspPlanningStateToROSMsg(gps, g, mHand);
 
         result_.grasps.push_back(g);
