@@ -867,7 +867,8 @@ void GraspitInterface::runPlannerInMainThread()
         // set hand position and dofs
         transf newTransform = rosMsgToTransf(goal.seed_grasp.pose);
         graspitCore->getWorld()->getRobot(0)->setTran(newTransform);
-        graspitCore->getWorld()->getHand(0)->forceDOFVals(goal.seed_grasp.dofs.data());
+        mHand->autoGrasp(false,-1.0,false);
+        // graspitCore->getWorld()->getHand(0)->forceDOFVals(goal.seed_grasp.dofs.data());
         mHandObjectState->saveCurrentHandState();
     }
 
@@ -1021,9 +1022,9 @@ void GraspitInterface::graspPlanningStateToROSMsg(const GraspPlanningState* gps,
         // This is to handle hand-object collision cases that causes graspit World::findAllContacts to freeze
         // issue possibly in jumpDOFToContact putting fingers in the object
         gps->execute(mHand);
-        mHand->autoGrasp(false,1.0,false);
+        mHand->autoGrasp(false,-1.0,false); // checking if autoOpen moves the hand out of collision
         bool isLegal = mHand->getWorld()->noCollision(mHand);
-        if (isLegal){
+        if (!isLegal){
             continue;
         }
 
